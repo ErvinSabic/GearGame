@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <style>
+            .red-bg {
+                background-image: url("gearlogo.png");
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 1000px;
+                width: 1000px;
+                position: fixed;
+                animation-name: spin;
+                animation-duration: 500ms;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+                overflow: hidden;
+            }
+
+            @keyframes spin {
+                from {
+                    transform:rotate(0deg);
+                }
+                to {
+                    transform:rotate(360deg);
+                }
+            }
+
+            .gamebox {
+              width: 1000px;
+              height: 1000px;
+            }
+
+            body * {
+              -webkit-touch-callout: none; /* iOS Safari */
+              -webkit-user-select: none; /* Safari */
+              -khtml-user-select: none; /* Konqueror HTML */
+              -moz-user-select: none; /* Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently*/
+            }
+        </style>
+    </head>
+    <body>
+      <header>
+        <h1>Your Score:<span id="score"></span></h1>
+        <h5>You Have Clicked <span id="attempts"></span> Times</h5>
+        <h5>Accuracy Rate: <span id="accuracy"></span></h5>
+      </header>
+      <main>
+            <div class="boxy-boi red-bg"></div>
+      </main>
+      <footer>
+        <script>
+        var score = 0;
+        var factor = 100;
+        var attempts = 0;
+            $(document).ready(function(){
+                boxyBoi();
+                $('.boxy-boi').click(function(){
+                    factor = factor - 2;
+                    $('.boxy-boi').height($('.boxy-boi').height()-10);
+                    $('.boxy-boi').width($('.boxy-boi').width()-10);
+                    score++;
+                    $('#score').text(score);
+                })
+            })
+
+            $(document).click(function() {
+              attempts++;
+              $('#attempts').text(attempts);
+              $('#accuracy').text((score/attempts)*100);
+            })
+
+            function generatePositions(){
+                let windowHeight = $(window).height();
+                let windowWidth = $(window).width();
+
+                let newH = Math.floor(Math.random() * windowHeight);
+                let newW = Math.floor(Math.random() * windowWidth);
+
+                return {
+                    h: newH,
+                    w: newW
+                }
+            }
+
+            function boxyBoi(){
+                let newPos = generatePositions();
+                $('.boxy-boi').animate({ top: newPos.h, left: newPos.w }, function(){
+                boxyBoi();
+                });
+            }
+        </script>
+      </footer>
+
+    </body>
+    </html>
